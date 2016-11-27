@@ -9,7 +9,7 @@ public interface SlangDictionary {
         return new MapSlangDictionary();
     }
 
-    Slang getSlang(String officialWord, Locale locale);
+    Slang getSlang(String officialWord, Coordinate coordinates);
 
     void addSlang(Slang slang, String officialWord, Locale locale);
 

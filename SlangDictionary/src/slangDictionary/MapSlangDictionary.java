@@ -13,17 +13,20 @@ public class MapSlangDictionary implements SlangDictionary {
     private Map<LocaleWord, Slang> dictionary = new HashMap<>();
 
     @Override
-    public Slang getSlang(String officialWord, Locale locale) {
+    public Slang getSlang(String officialWord, Coordinate coordinate) {
         Translator translator = Translator.create();
         String actualLanguage = translator.identifyLanguage(officialWord);
 
+        Locator locator = null;
+        Locale closestLocale = locator.getClosestLocale(coordinate);
+
         String translation;
         if(translator.supportsLanguage(actualLanguage))
-            translation = translator.translate(actualLanguage, officialWord, locale.getlanguage());
+            translation = translator.translate(actualLanguage, officialWord, closestLocale.getlanguage());
         else
             throw new UnsupportedLanguageException(actualLanguage);
 
-        LocaleWord key = new LocaleWord(translation, locale);
+        LocaleWord key = new LocaleWord(translation, closestLocale);
 
         return this.dictionary.get(key);
     }

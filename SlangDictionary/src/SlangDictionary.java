@@ -3,6 +3,10 @@
  */
 public interface SlangDictionary {
 
+    static SlangDictionary create(){
+        return new MapSlangDictionary();
+    }
+
     Slang getSlang(String officialWord, Location location);
 
     void addSlang(Slang slang, String officialWord, Location location);

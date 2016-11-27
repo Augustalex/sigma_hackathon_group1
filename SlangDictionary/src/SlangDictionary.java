@@ -3,8 +3,8 @@
  */
 public interface SlangDictionary {
 
-    LocationBasedWord getSlang(String word, Location location);
+    String getSlang(String officialWord, Location location);
 
-    void addSlang(LocationBasedWord slang, LocationBasedWord officialWord, Location location);
+    void addSlang(String slang, String officialWord, Location location);
 
 }

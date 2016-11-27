@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="translateSlang.IndexController"
+            stylesheets="/translateSlang/main.css" id="container">
+    <center>
+        <VBox>
+            <HBox>
+                <Label id="label" text="Search slang for?"/>
+                <TextField id="input" fx:id="translateInput" />
+            </HBox>
+            <HBox>
+                <Button fx:id="translate" text="Translate" />
+                <TextField id="input" fx:id="submitInput" />
+                <Button fx:id="submit" text="Submit" />
+            </HBox>
+            <HBox>
+                <Label fx:id="translateOutput" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

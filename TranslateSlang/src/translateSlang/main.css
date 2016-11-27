@@ -1,0 +1,21 @@
+#container{
+    -fx-background-color: tomato;
+}
+
+.label{
+}
+
+*{
+    -fx-font-size: 4em;
+    -fx-text-fill: white;
+
+}
+
+.button{
+    -fx-text-fill: black;
+    -fx-background-color: white;
+}
+
+.text-field{
+    -fx-text-fill: black;
+}

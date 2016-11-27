@@ -3,6 +3,7 @@ package slangDictionary;
 import locator.Coordinate;
 import locator.Locale;
 import locator.Locator;
+import slangDictionary.exception.UnsupportedLanguageException;
 import translator.Translator;
 
 import java.util.HashMap;
@@ -12,6 +13,8 @@ import java.util.Map;
  * Created by August on 2016-11-27.
  */
 public class MapSlangDictionary implements SlangDictionary {
+
+    private final static String filePath = "dictionaryStorage.json";
 
     private Map<LocaleWord, Slang> dictionary = new HashMap<>();
 
@@ -45,5 +48,13 @@ public class MapSlangDictionary implements SlangDictionary {
         for(Map.Entry<String, String> entry : allSlangs.entrySet()){
             addSlang(new Slang(entry.getValue()), entry.getKey(), locale);
         }
+    }
+
+    public void store(){
+        
+    }
+
+    public void restore(){
+
     }
 }

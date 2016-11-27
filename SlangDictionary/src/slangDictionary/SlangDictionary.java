@@ -9,8 +9,8 @@ public interface SlangDictionary {
         return new MapSlangDictionary();
     }
 
-    Slang getSlang(String officialWord, Location location);
+    Slang getSlang(String officialWord, Locale locale);
 
-    void addSlang(Slang slang, String officialWord, Location location);
+    void addSlang(Slang slang, String officialWord, Locale locale);
 
 }

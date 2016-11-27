@@ -1,4 +1,4 @@
-package slangDictionary;
+package slangDictionary.slang;
 
 import java.util.Objects;
 

@@ -1,9 +1,11 @@
-package slangDictionary;
+package slangDictionary.dictionary;
 
-import locator.Coordinate;
+import locator.Coordinates;
 import locator.Locale;
 import locator.Locator;
-import slangDictionary.exception.UnsupportedLanguageException;
+import slangDictionary.slang.LocaleWord;
+import slangDictionary.slang.Slang;
+import slangDictionary.exceptions.UnsupportedLanguageException;
 import translator.Translator;
 
 import java.util.HashMap;
@@ -19,8 +21,8 @@ public class MapSlangDictionary implements SlangDictionary {
     private Map<LocaleWord, Slang> dictionary = new HashMap<>();
 
     @Override
-    public Slang getSlang(String officialWord, Coordinate coordinate) {
-        LocaleWord key = matchWordToLocalWord(officialWord, coordinate);
+    public Slang getSlang(String officialWord, Coordinates coordinates) {
+        LocaleWord key = matchWordToLocalWord(officialWord, coordinates);
         return this.dictionary.get(key);
     }
 
@@ -47,8 +49,8 @@ public class MapSlangDictionary implements SlangDictionary {
 
     }
 
-    private LocaleWord matchWordToLocalWord(String word, Coordinate coordinate){
-        Locale closestLocale = Locator.create().getClosestLocale(coordinate);
+    private LocaleWord matchWordToLocalWord(String word, Coordinates coordinates){
+        Locale closestLocale = Locator.create().getClosestLocale(coordinates);
         String translatedWord = translateToLocalLanguage(word, closestLocale);
 
         return new LocaleWord(translatedWord, closestLocale);

@@ -1,10 +1,10 @@
-package slangDictionary;
+package slangDictionary.dictionary;
 
-import locator.Coordinate;
+import locator.Coordinates;
 import locator.Locale;
+import slangDictionary.slang.Slang;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +15,7 @@ public interface SlangDictionary {
     static SlangDictionary create(){
         SlangDictionary dictionary = new MapSlangDictionary();
 
-        Locale locale = new Locale(new Coordinate(100, 100), "Swedish");
+        Locale locale = new Locale(new Coordinates(100, 100), "Swedish");
 
         Map<String, String> allSlangs = new HashMap<>();
 
@@ -37,7 +37,7 @@ public interface SlangDictionary {
         return dictionary;
     }
 
-    Slang getSlang(String officialWord, Coordinate coordinates);
+    Slang getSlang(String officialWord, Coordinates coordinates);
 
     void addSlang(Slang slang, String officialWord, Locale locale);
 

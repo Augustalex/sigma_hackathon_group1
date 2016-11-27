@@ -5,12 +5,12 @@ import java.util.Objects;
 /**
  * Created by August on 2016-11-27.
  */
-public class Coordinate {
+public class Coordinates {
 
     public double longitude;
     public double latitude;
 
-    public Coordinate(double longitude, double latitude){
+    public Coordinates(double longitude, double latitude){
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -19,7 +19,7 @@ public class Coordinate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Coordinate that = (Coordinate) o;
+        Coordinates that = (Coordinates) o;
         return Double.compare(that.longitude, longitude) == 0 &&
                 Double.compare(that.latitude, latitude) == 0;
     }

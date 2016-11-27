@@ -7,15 +7,15 @@ import java.util.Objects;
  */
 public class Locale {
 
-    private Coordinate coordinates;
+    private Coordinates coordinates;
     private String language;
 
-    public Locale(Coordinate coordinates, String language){
+    public Locale(Coordinates coordinates, String language){
         this.coordinates = coordinates;
         this.language = language;
     }
 
-    public Coordinate getCoordinates(){
+    public Coordinates getCoordinates(){
         return this.coordinates;
     }
 

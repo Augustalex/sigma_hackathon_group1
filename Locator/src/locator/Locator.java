@@ -8,12 +8,12 @@ public interface Locator {
     static Locator create(){
         return new Locator() {
             @Override
-            public Locale getClosestLocale(Coordinate coordinate) {
-                return new Locale(new Coordinate(100, 100), "Swedish");
+            public Locale getClosestLocale(Coordinates coordinates) {
+                return new Locale(new Coordinates(100, 100), "Swedish");
             }
         };
     }
 
-    Locale getClosestLocale(Coordinate coordinate);
+    Locale getClosestLocale(Coordinates coordinates);
 
 }

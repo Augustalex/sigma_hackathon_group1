@@ -24,9 +24,8 @@ public class MapSlangDictionary implements SlangDictionary {
             throw new UnsupportedLanguageException(actualLanguage);
 
         LocaleWord key = new LocaleWord(translation, locale);
-        Slang slang = this.dictionary.get(key);
 
-        return slang;
+        return this.dictionary.get(key);
     }
 
     @Override

@@ -18,5 +18,7 @@ public class Test {
 
         Slang result = dictionary.getSlang("Hej", new Coordinate(100, 100));
         System.out.println(result.toString());
+
+        System.out.println(dictionary.getSlang("Flytta", new Coordinate(100, 100)).toString());
     }
 }

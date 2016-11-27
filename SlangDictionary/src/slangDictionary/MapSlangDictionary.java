@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class MapSlangDictionary implements SlangDictionary {
 
-    private Map<LocaleWord, String> dictionary = new HashMap<>();
+    private Map<LocaleWord, Slang> dictionary = new HashMap<>();
 
     @Override
     public Slang getSlang(String officialWord, Coordinate coordinate) {
@@ -31,12 +31,19 @@ public class MapSlangDictionary implements SlangDictionary {
 
         LocaleWord key = new LocaleWord(translation, closestLocale);
 
-        return new Slang(this.dictionary.get(key));
+        return this.dictionary.get(key);
     }
 
     @Override
     public void addSlang(Slang slang, String officialWord, Locale locale) {
         LocaleWord key = new LocaleWord(officialWord, locale);
-        this.dictionary.put(key, slang.toString());
+        this.dictionary.put(key, slang);
+    }
+
+    @Override
+    public void addAllSlangs(Map<String, String> allSlangs, Locale locale) {
+        for(Map.Entry<String, String> entry : allSlangs.entrySet()){
+            addSlang(new Slang(entry.getValue()), entry.getKey(), locale);
+        }
     }
 }

@@ -1,5 +1,8 @@
 package slangDictionary;
 
+import locator.Coordinate;
+import locator.Locale;
+import locator.Locator;
 import translator.Translator;
 
 import java.util.HashMap;
@@ -17,7 +20,7 @@ public class MapSlangDictionary implements SlangDictionary {
         Translator translator = Translator.create();
         String actualLanguage = translator.identifyLanguage(officialWord);
 
-        Locator locator = null;
+        Locator locator = Locator.create();
         Locale closestLocale = locator.getClosestLocale(coordinate);
 
         String translation;

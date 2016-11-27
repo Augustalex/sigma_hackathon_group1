@@ -1,4 +1,4 @@
-package slangDictionary;
+package locator;
 
 /**
  * Created by August on 2016-11-27.

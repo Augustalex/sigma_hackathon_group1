@@ -1,5 +1,7 @@
 package slangDictionary;
 
+import locator.Locale;
+
 /**
  * Created by August on 2016-11-27.
  */

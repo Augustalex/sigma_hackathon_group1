@@ -18,4 +18,9 @@ public class Slang {
     public String toString(){
         return this.slang;
     }
+
+    @Override
+    public int hashCode(){
+        return slang.hashCode();
+    }
 }

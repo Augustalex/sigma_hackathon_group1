@@ -20,20 +20,7 @@ public class MapSlangDictionary implements SlangDictionary {
 
     @Override
     public Slang getSlang(String officialWord, Coordinate coordinate) {
-        Translator translator = Translator.create();
-        String actualLanguage = translator.identifyLanguage(officialWord);
-
-        Locator locator = Locator.create();
-        Locale closestLocale = locator.getClosestLocale(coordinate);
-
-        String translation;
-        if(translator.supportsLanguage(actualLanguage))
-            translation = translator.translate(actualLanguage, officialWord, closestLocale.getLanguage());
-        else
-            throw new UnsupportedLanguageException(actualLanguage);
-
-        LocaleWord key = new LocaleWord(translation, closestLocale);
-
+        LocaleWord key = matchWordToLocalWord(officialWord, coordinate);
         return this.dictionary.get(key);
     }
 
@@ -45,16 +32,36 @@ public class MapSlangDictionary implements SlangDictionary {
 
     @Override
     public void addAllSlangs(Map<String, String> allSlangs, Locale locale) {
-        for(Map.Entry<String, String> entry : allSlangs.entrySet()){
-            addSlang(new Slang(entry.getValue()), entry.getKey(), locale);
-        }
+        allSlangs.entrySet().parallelStream()
+                .forEach((entry) -> addSlang(
+                        new Slang(entry.getValue()),
+                        entry.getKey(), locale
+                ));
     }
 
     public void store(){
-        
+
     }
 
     public void restore(){
+
+    }
+
+    private LocaleWord matchWordToLocalWord(String word, Coordinate coordinate){
+        Locale closestLocale = Locator.create().getClosestLocale(coordinate);
+        String translatedWord = translateToLocalLanguage(word, closestLocale);
+
+        return new LocaleWord(translatedWord, closestLocale);
+    }
+
+    private String translateToLocalLanguage(String word, Locale closestLocale){
+        Translator translator = Translator.create();
+        String actualLanguage = translator.identifyLanguage(word);
+
+        if(translator.supportsLanguage(actualLanguage))
+            return translator.translate(actualLanguage, word, closestLocale.getLanguage());
+        else
+            throw new UnsupportedLanguageException(actualLanguage);
 
     }
 }

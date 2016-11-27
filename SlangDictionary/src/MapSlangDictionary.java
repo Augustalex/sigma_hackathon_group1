@@ -6,13 +6,17 @@ import java.util.Map;
  */
 public class MapSlangDictionary implements SlangDictionary {
 
-    private Map<LocationBasedWord, LocationBasedWord> dictionary = new HashMap<>();
+    private Map<LocationBasedWord, Slang> dictionary = new HashMap<>();
 
-    public LocationBasedWord getSlang(LocationBasedWord officialWord, Location location) {
-        return null;
+    @Override
+    public Slang getSlang(String officialWord, Location location) {
+        LocationBasedWord key = new LocationBasedWord(officialWord, location);
+        return this.dictionary.get(key);
     }
 
-    public void addSlang(LocationBasedWord slang, LocationBasedWord officialWord, Location location) {
-
+    @Override
+    public void addSlang(Slang slang, String officialWord, Location location) {
+        LocationBasedWord key = new LocationBasedWord(officialWord, location);
+        this.dictionary.put(key, slang);
     }
 }

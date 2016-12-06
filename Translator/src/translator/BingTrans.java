@@ -1,28 +1,41 @@
 import java.net.URLConnection;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class BingTrans
 {
-	private static final String post_template = "http://www.bing.com/translator/api/Translate/TranslateArray?from=%s&to=%s";
+	private static final String url_get = "http://www.bing.com/translator";
+	private static final String post_template =
+			"http://www.bing.com/translator/api/Translate/TranslateArray?from=%s&to=%s";
+	private static boolean verbose = true;
 
-	private static URLConnection openConnection (String url) throws IOException
+	private static final void printv (String msg)
 	{
-		URLConnection conn = new URL(url).openConnection();
+		if (verbose) {
+			System.out.println(msg);
+		}
+	}
+
+	private static HttpURLConnection openConnection (String url) throws IOException
+	{
+		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 		conn.setRequestProperty("Host", "www.bing.com");
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 		conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
 		conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 		conn.setRequestProperty("DNT", "1");
 		conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-		conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
 		conn.setRequestProperty("Referer", "https://www.bing.com/translator/");
 		conn.setRequestProperty("Connection", "keep-alive");
 		conn.setRequestProperty("Pragma", "no-cache");
@@ -59,29 +72,51 @@ public class BingTrans
 	private static Response translate (String phrase, String to, String from)
 			throws IOException
 	{
-		int id = 1;
+		HttpURLConnection con_get = openConnection(url_get);
+		con_get.setDoOutput(true);
 
-		final String post_url = String.format(post_template, from, to);
-		URLConnection conn = openConnection(post_url);
-		conn.setDoOutput(true); // POST
+		final int resp_code = con_get.getResponseCode();
+		printv("GET response code: " + resp_code);
+
+		// Extract cookie headers:
+		List<String> cookies = new ArrayList<String>();
+		for (String header : con_get.getHeaderFields().get("Set-Cookie")) {
+			String[] parts = header.split(";");
+			cookies.add(parts[0]);
+		}
+
+		for (String cookie : cookies) {
+			printv("Cookie: " + cookie);
+		}
+
+		// Set up the POST request for actual translation:
+		HttpURLConnection con_post = openConnection(
+				String.format(post_template, from, to));
+		con_post.setRequestProperty("Cookie", String.join("; ", cookies));
+		con_post.setDoOutput(true); // POST
 
 		// Create request and encode it as JSON:
 		Gson gson = new GsonBuilder().create();
-		final byte[] data = gson.toJson(new Request(id, phrase)).getBytes();
+		final String str = gson.toJson(new Request(phrase.hashCode(), phrase));
+		final byte[] data = str.getBytes();
 
-		conn.setRequestProperty("Content-Length",
+		printv("JSON body: " + str);
+
+		con_post.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+		con_post.setRequestProperty("Content-Length",
 				Integer.toString(data.length));
-		OutputStream stream = conn.getOutputStream();
+		OutputStream stream = con_post.getOutputStream();
 		stream.write(data);
 
-		// Get response from server:
+		// Read response from server to POST request:
 		BufferedReader in = new BufferedReader(
-				new InputStreamReader(conn.getInputStream()));
+				new InputStreamReader(con_post.getInputStream()));
 		return gson.fromJson(in, Response.class);
 	}
 
 	public static void main (String[] args)
 	{
+		// TODO: Add -verbose argument parsing:
 		if (args.length < 2) {
 			System.err.println("usage: BingTrans <text> <lang-out> [lang-in]");
 			System.err.println("example: BingTrans \"hello\" sv");
@@ -100,7 +135,7 @@ public class BingTrans
 					resp.from, resp.to, resp.items.get(0).text));
 
 		} catch (IOException e) {
-			System.err.println("Error opening POST URL: " + e);
+			System.err.println("Communications error: " + e);
 		}
 	}
 }

@@ -96,7 +96,9 @@ public class BingTrans
 
 		// Create request and encode it as JSON:
 		Gson gson = new GsonBuilder().create();
-		final String str = gson.toJson(new Request(phrase.hashCode(), phrase));
+		List<Request> requests = new ArrayList<Request>();
+		requests.add(new Request(phrase.hashCode(), phrase));
+		final String str = gson.toJson(requests);
 		final byte[] data = str.getBytes();
 
 		printv("JSON body: " + str);
